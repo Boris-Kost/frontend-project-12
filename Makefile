@@ -5,7 +5,7 @@ build:
 	npm run build
 
 start:
-	npx start-server -s frontend/dist
+	npx start-server
 
 lint:
 	npm run lint
