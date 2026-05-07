@@ -1,15 +1,45 @@
-import React from 'react';
+import * as yup from 'yup';
+import { useState, useRef, useEffect } from 'react';
+import axios from 'axios';
+import { useDispatch } from 'react-redux';
+import { useNavigate } from 'react-router-dom';
 import { useFormik } from 'formik';
 import { Button, Form } from 'react-bootstrap';
+import { logIn } from '../slices/authSlice';
 
 const LoginPage = () => {
+  const [authFailed, setAuthFailed] = useState(false);
+  const inputRef = useRef();
+  const dispatch = useDispatch();
+  const navigate = useNavigate();
+
+  useEffect(() => {
+    inputRef.current.focus();
+  }, []);
+
   const formik = useFormik({
     initialValues: {
       username: '',
       password: '',
     },
-    onSubmit: (values) => {
-      console.log('Login values:', values);
+    validationSchema: yup.object({
+      username: yup.string().required('Обязательное поле'),
+      password: yup.string().required('Обязательное поле'),
+    }),
+    onSubmit: async (values) => {
+      setAuthFailed(false);
+      try {
+        const response = await axios.post('/api/v1/login', values);
+        dispatch(logIn(response.data));
+        navigate('/');
+      } catch (err) {
+        if (err.isAxiosError && err.response.status === 401) {
+          setAuthFailed(true);
+          inputRef.current.select();
+          return;
+        }
+        console.error(err);
+      }
     },
   });
 
@@ -29,9 +59,14 @@ const LoginPage = () => {
                     name="username"
                     id="username"
                     autoComplete="username"
+                    isInvalid={authFailed || (formik.touched.username && formik.errors.username)}
                     required
+                    ref={inputRef}
                   />
                   <Form.Label htmlFor="username">Ваш ник</Form.Label>
+                  <Form.Control.Feedback type="invalid">
+                    {formik.errors.username}
+                  </Form.Control.Feedback>
                 </Form.Group>
                 <Form.Group className="form-floating mb-4">
                   <Form.Control
@@ -42,9 +77,13 @@ const LoginPage = () => {
                     name="password"
                     id="password"
                     autoComplete="current-password"
+                    isInvalid={authFailed || (formik.touched.password && formik.errors.password)}
                     required
                   />
                   <Form.Label htmlFor="password">Пароль</Form.Label>
+                  <Form.Control.Feedback type="invalid">
+                    {authFailed ? 'Неверные имя пользователя или пароль' : formik.errors.password}
+                  </Form.Control.Feedback>
                 </Form.Group>
                 <Button type="submit" variant="outline-primary" className="w-100 mb-3">Войти</Button>
               </Form>
