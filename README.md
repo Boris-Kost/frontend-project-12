@@ -2,4 +2,4 @@
 [![Actions Status](https://github.com/Boris-Kost/frontend-project-12/actions/workflows/hexlet-check.yml/badge.svg)](https://github.com/Boris-Kost/frontend-project-12/actions)
 
 ### Deployed App:
-[Hexlet Chat](https://frontend-project-12-xxxx.onrender.com)
+[Hexlet Chat](https://frontend-project-12-ad39.onrender.com)
