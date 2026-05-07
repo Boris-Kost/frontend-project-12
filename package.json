@@ -1,0 +1,25 @@
+{
+  "name": "@hexlet/code",
+  "version": "1.0.0",
+  "description": "[![Actions Status](https://github.com/Boris-Kost/frontend-project-12/actions/workflows/hexlet-check.yml/badge.svg)](https://github.com/Boris-Kost/frontend-project-12/actions)",
+  "main": "index.js",
+  "scripts": {
+    "build": "npm run build --prefix frontend",
+    "start": "npx start-server -s ./frontend/dist"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Boris-Kost/frontend-project-12.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "type": "commonjs",
+  "bugs": {
+    "url": "https://github.com/Boris-Kost/frontend-project-12/issues"
+  },
+  "homepage": "https://github.com/Boris-Kost/frontend-project-12#readme",
+  "dependencies": {
+    "@hexlet/chat-server": "^2.0.4"
+  }
+}
