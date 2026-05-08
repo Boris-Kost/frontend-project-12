@@ -7,10 +7,20 @@ import './index.css'
 import App from './App.jsx'
 import store from './slices/index.js';
 import { addMessage } from './slices/messagesSlice';
+import { addChannels, renameChannel, removeChannel } from './slices/channelsSlice';
 
 const socket = io();
 socket.on('newMessage', (payload) => {
   store.dispatch(addMessage(payload));
+});
+socket.on('newChannel', (payload) => {
+  store.dispatch(addChannels([payload]));
+});
+socket.on('renameChannel', (payload) => {
+  store.dispatch(renameChannel(payload));
+});
+socket.on('removeChannel', (payload) => {
+  store.dispatch(removeChannel(payload.id));
 });
 
 createRoot(document.getElementById('root')).render(
