@@ -13,19 +13,21 @@ import PrivateRoute from './components/PrivateRoute';
 
 import { useDispatch, useSelector } from 'react-redux';
 import { Button, Navbar, Container } from 'react-bootstrap';
+import { useTranslation } from 'react-i18next';
 import { logOut } from './slices/authSlice';
 
 const App = () => {
   const { token } = useSelector((state) => state.auth);
   const dispatch = useDispatch();
+  const { t } = useTranslation();
 
   return (
     <Router>
       <div className="d-flex flex-column h-100">
         <Navbar bg="white" expand="lg" className="shadow-sm">
           <Container>
-            <Navbar.Brand as={Link} to="/">Hexlet Chat</Navbar.Brand>
-            {token && <Button onClick={() => dispatch(logOut())}>Выйти</Button>}
+            <Navbar.Brand as={Link} to="/">{t('header.logo')}</Navbar.Brand>
+            {token && <Button onClick={() => dispatch(logOut())}>{t('header.logout')}</Button>}
           </Container>
         </Navbar>
         <Routes>

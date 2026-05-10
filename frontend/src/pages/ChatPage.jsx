@@ -4,6 +4,7 @@ import { useDispatch, useSelector } from 'react-redux';
 import { Container, Row, Col, ListGroup, Form, Button, InputGroup, Dropdown, ButtonGroup } from 'react-bootstrap';
 import { useFormik } from 'formik';
 import * as yup from 'yup';
+import { useTranslation } from 'react-i18next';
 import { addChannels, setCurrentChannelId, selectors as channelsSelectors } from '../slices/channelsSlice';
 import { addMessages, selectors as messagesSelectors } from '../slices/messagesSlice';
 import { openModal } from '../slices/modalSlice';
@@ -13,6 +14,7 @@ const ChatPage = () => {
   const dispatch = useDispatch();
   const { token, username } = useSelector((state) => state.auth);
   const messagesBoxRef = useRef();
+  const { t } = useTranslation();
   
   const channels = useSelector(channelsSelectors.selectAll);
   const currentChannelId = useSelector((state) => state.channels.currentChannelId);
@@ -79,7 +81,7 @@ const ChatPage = () => {
       <Row className="h-100 bg-white flex-md-row">
         <Col className="col-4 col-md-2 border-end pt-5 px-0 bg-light">
           <div className="d-flex justify-content-between mb-2 ps-4 pe-2">
-            <b>Каналы</b>
+            <b>{t('chat.channels')}</b>
             <Button variant="group-vertical" className="p-0 text-primary" onClick={() => dispatch(openModal({ type: 'adding' }))}>
               <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" width="20" height="20" fill="currentColor"><path d="M14 1a1 1 0 0 1 1 1v12a1 1 0 0 1-1 1H2a1 1 0 0 1-1-1V2a1 1 0 0 1 1-1h12zM2 0a2 2 0 0 0-2 2v12a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V2a2 2 0 0 0-2-2H2z"></path><path d="M8 4a.5.5 0 0 1 .5.5v3h3a.5.5 0 0 1 0 1h-3v3a.5.5 0 0 1-1 0v-3h-3a.5.5 0 0 1 0-1h3v-3A.5.5 0 0 1 8 4z"></path></svg>
               <span className="visually-hidden">+</span>
@@ -104,11 +106,11 @@ const ChatPage = () => {
                   {channel.removable && (
                     <>
                       <Dropdown.Toggle split variant={channel.id === currentChannelId ? 'secondary' : 'light'} className="rounded-0 text-dark">
-                        <span className="visually-hidden">Управление каналом</span>
+                        <span className="visually-hidden">{t('chat.channelControl')}</span>
                       </Dropdown.Toggle>
                       <Dropdown.Menu>
-                        <Dropdown.Item onClick={() => dispatch(openModal({ type: 'removing', item: channel.id }))}>Удалить</Dropdown.Item>
-                        <Dropdown.Item onClick={() => dispatch(openModal({ type: 'renaming', item: channel.id }))}>Переименовать</Dropdown.Item>
+                        <Dropdown.Item onClick={() => dispatch(openModal({ type: 'removing', item: channel.id }))}>{t('chat.remove')}</Dropdown.Item>
+                        <Dropdown.Item onClick={() => dispatch(openModal({ type: 'renaming', item: channel.id }))}>{t('chat.rename')}</Dropdown.Item>
                       </Dropdown.Menu>
                     </>
                   )}
@@ -123,7 +125,7 @@ const ChatPage = () => {
               <p className="m-0">
                 <b># {currentChannel?.name}</b>
               </p>
-              <span className="text-muted">{currentChannelMessages.length} сообщений</span>
+              <span className="text-muted">{t('chat.messageCount', { count: currentChannelMessages.length })}</span>
             </div>
             <div id="messages-box" ref={messagesBoxRef} className="chat-messages overflow-auto px-5">
               {currentChannelMessages.map((message) => (
@@ -137,8 +139,8 @@ const ChatPage = () => {
                 <InputGroup hasValidation>
                   <Form.Control
                     name="body"
-                    aria-label="Новое сообщение"
-                    placeholder="Введите сообщение..."
+                    aria-label={t('chat.newMessage')}
+                    placeholder={t('chat.placeholder')}
                     className="border-0 p-0 ps-2"
                     onChange={formik.handleChange}
                     value={formik.values.body}
@@ -146,7 +148,7 @@ const ChatPage = () => {
                   />
                   <Button type="submit" variant="group-vertical" disabled={formik.isSubmitting || !formik.values.body.trim()}>
                     <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" width="20" height="20" fill="currentColor"><path fillRule="evenodd" d="M15 2a1 1 0 0 0-1-1H2a1 1 0 0 0-1 1v12a1 1 0 0 0 1 1h12a1 1 0 0 0 1-1V2zM0 2a2 2 0 0 1 2-2h12a2 2 0 0 1 2 2v12a2 2 0 0 1-2 2H2a2 2 0 0 1-2-2V2zm4.5 5.5a.5.5 0 0 0 0 1h5.793l-2.147 2.146a.5.5 0 0 0 .708.708l3-3a.5.5 0 0 0 0-.708l-3-3a.5.5 0 1 0-.708.708L10.293 7.5H4.5z"></path></svg>
-                    <span className="visually-hidden">Отправить</span>
+                    <span className="visually-hidden">{t('chat.send')}</span>
                   </Button>
                 </InputGroup>
               </Form>

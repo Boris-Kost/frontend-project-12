@@ -3,6 +3,7 @@ import { useDispatch, useSelector } from 'react-redux';
 import { Modal, Button, Form } from 'react-bootstrap';
 import { useFormik } from 'formik';
 import * as yup from 'yup';
+import { useTranslation } from 'react-i18next';
 import axios from 'axios';
 import { closeModal } from '../../slices/modalSlice';
 import { selectors as channelsSelectors } from '../../slices/channelsSlice';
@@ -12,6 +13,7 @@ const Rename = () => {
   const inputRef = useRef();
   const { token } = useSelector((state) => state.auth);
   const { item: channelId } = useSelector((state) => state.modal);
+  const { t } = useTranslation();
   
   const channel = useSelector((state) => channelsSelectors.selectById(state, channelId));
   const channels = useSelector(channelsSelectors.selectAll);
@@ -27,10 +29,10 @@ const Rename = () => {
       name: yup
         .string()
         .trim()
-        .required('Обязательное поле')
-        .min(3, 'От 3 до 20 символов')
-        .max(20, 'От 3 до 20 символов')
-        .notOneOf(channelNames, 'Должно быть уникальным'),
+        .required(t('errors.required'))
+        .min(3, t('errors.usernameLength'))
+        .max(20, t('errors.usernameLength'))
+        .notOneOf(channelNames, t('errors.unique')),
     }),
     onSubmit: async (values) => {
       try {
@@ -47,12 +49,12 @@ const Rename = () => {
   return (
     <Modal show onHide={() => dispatch(closeModal())} centered>
       <Modal.Header closeButton>
-        <Modal.Title>Переименовать канал</Modal.Title>
+        <Modal.Title>{t('modals.rename')}</Modal.Title>
       </Modal.Header>
       <Modal.Body>
         <Form onSubmit={formik.handleSubmit}>
           <Form.Group>
-            <Form.Label className="visually-hidden" htmlFor="name">Имя канала</Form.Label>
+            <Form.Label className="visually-hidden" htmlFor="name">{t('modals.channelName')}</Form.Label>
             <Form.Control
               ref={inputRef}
               id="name"
@@ -68,8 +70,8 @@ const Rename = () => {
             </Form.Control.Feedback>
           </Form.Group>
           <div className="d-flex justify-content-end mt-3">
-            <Button variant="secondary" className="me-2" onClick={() => dispatch(closeModal())}>Отменить</Button>
-            <Button variant="primary" type="submit" disabled={formik.isSubmitting}>Отправить</Button>
+            <Button variant="secondary" className="me-2" onClick={() => dispatch(closeModal())}>{t('modals.cancel')}</Button>
+            <Button variant="primary" type="submit" disabled={formik.isSubmitting}>{t('modals.submit')}</Button>
           </div>
         </Form>
       </Modal.Body>
