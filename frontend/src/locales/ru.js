@@ -57,5 +57,11 @@ export default {
       message: 'Упс! Страница не найдена',
       link: 'Вернуться на главную',
     },
+    toast: {
+      channelCreated: 'Канал создан',
+      channelRenamed: 'Канал переименован',
+      channelRemoved: 'Канал удалён',
+      networkError: 'Ошибка соединения',
+    },
   },
 };

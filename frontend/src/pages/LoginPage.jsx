@@ -6,6 +6,7 @@ import { useNavigate, Link } from 'react-router-dom';
 import { useFormik } from 'formik';
 import { Button, Form } from 'react-bootstrap';
 import { useTranslation } from 'react-i18next';
+import { toast } from 'react-toastify';
 import { logIn } from '../slices/authSlice';
 
 const LoginPage = () => {
@@ -35,11 +36,12 @@ const LoginPage = () => {
         dispatch(logIn(response.data));
         navigate('/');
       } catch (err) {
-        if (err.isAxiosError && err.response.status === 401) {
+        if (err.isAxiosError && err.response?.status === 401) {
           setAuthFailed(true);
           inputRef.current.select();
           return;
         }
+        toast.error(t('toast.networkError'));
         console.error(err);
       }
     },

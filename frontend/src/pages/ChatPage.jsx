@@ -5,6 +5,7 @@ import { Container, Row, Col, ListGroup, Form, Button, InputGroup, Dropdown, But
 import { useFormik } from 'formik';
 import * as yup from 'yup';
 import { useTranslation } from 'react-i18next';
+import { toast } from 'react-toastify';
 import { addChannels, setCurrentChannelId, selectors as channelsSelectors } from '../slices/channelsSlice';
 import { addMessages, selectors as messagesSelectors } from '../slices/messagesSlice';
 import { openModal } from '../slices/modalSlice';
@@ -43,6 +44,9 @@ const ChatPage = () => {
           dispatch(setCurrentChannelId(channelsResponse.data[0].id));
         }
       } catch (err) {
+        if (!err.isAxiosError || err.response?.status !== 401) {
+          toast.error(t('toast.networkError'));
+        }
         console.error('Fetch error:', err);
       }
     };
@@ -67,6 +71,7 @@ const ChatPage = () => {
         });
         resetForm();
       } catch (err) {
+        toast.error(t('toast.networkError'));
         console.error('Send error:', err);
       }
     },

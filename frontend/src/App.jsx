@@ -14,6 +14,8 @@ import PrivateRoute from './components/PrivateRoute';
 import { useDispatch, useSelector } from 'react-redux';
 import { Button, Navbar, Container } from 'react-bootstrap';
 import { useTranslation } from 'react-i18next';
+import { ToastContainer } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 import { logOut } from './slices/authSlice';
 
 const App = () => {
@@ -44,6 +46,7 @@ const App = () => {
           <Route path="*" element={<NotFoundPage />} />
         </Routes>
       </div>
+      <ToastContainer />
     </Router>
   );
 };

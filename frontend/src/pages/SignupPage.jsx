@@ -6,6 +6,7 @@ import { useNavigate } from 'react-router-dom';
 import { useFormik } from 'formik';
 import { Button, Form } from 'react-bootstrap';
 import { useTranslation } from 'react-i18next';
+import { toast } from 'react-toastify';
 import { logIn } from '../slices/authSlice';
 
 const SignupPage = () => {
@@ -50,11 +51,12 @@ const SignupPage = () => {
         dispatch(logIn(response.data));
         navigate('/');
       } catch (err) {
-        if (err.isAxiosError && err.response.status === 409) {
+        if (err.isAxiosError && err.response?.status === 409) {
           setRegistrationFailed(true);
           inputRef.current.select();
           return;
         }
+        toast.error(t('toast.networkError'));
         console.error(err);
       }
     },

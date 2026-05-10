@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { Modal, Button } from 'react-bootstrap';
 import { useTranslation } from 'react-i18next';
+import { toast } from 'react-toastify';
 import axios from 'axios';
 import { closeModal } from '../../slices/modalSlice';
 
@@ -18,8 +19,10 @@ const Remove = () => {
       await axios.delete(`/api/v1/channels/${channelId}`, {
         headers: { Authorization: `Bearer ${token}` },
       });
+      toast.success(t('toast.channelRemoved'));
       dispatch(closeModal());
     } catch (err) {
+      toast.error(t('toast.networkError'));
       console.error('Remove channel error:', err);
       setIsSubmitting(false);
     }

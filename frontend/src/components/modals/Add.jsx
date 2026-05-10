@@ -4,6 +4,7 @@ import { Modal, Button, Form } from 'react-bootstrap';
 import { useFormik } from 'formik';
 import * as yup from 'yup';
 import { useTranslation } from 'react-i18next';
+import { toast } from 'react-toastify';
 import axios from 'axios';
 import { closeModal } from '../../slices/modalSlice';
 import { setCurrentChannelId, selectors as channelsSelectors } from '../../slices/channelsSlice';
@@ -37,8 +38,10 @@ const Add = () => {
           headers: { Authorization: `Bearer ${token}` },
         });
         dispatch(setCurrentChannelId(response.data.id));
+        toast.success(t('toast.channelCreated'));
         dispatch(closeModal());
       } catch (err) {
+        toast.error(t('toast.networkError'));
         console.error('Add channel error:', err);
       }
     },

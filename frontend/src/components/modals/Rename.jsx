@@ -4,6 +4,7 @@ import { Modal, Button, Form } from 'react-bootstrap';
 import { useFormik } from 'formik';
 import * as yup from 'yup';
 import { useTranslation } from 'react-i18next';
+import { toast } from 'react-toastify';
 import axios from 'axios';
 import { closeModal } from '../../slices/modalSlice';
 import { selectors as channelsSelectors } from '../../slices/channelsSlice';
@@ -39,8 +40,10 @@ const Rename = () => {
         await axios.patch(`/api/v1/channels/${channelId}`, values, {
           headers: { Authorization: `Bearer ${token}` },
         });
+        toast.success(t('toast.channelRenamed'));
         dispatch(closeModal());
       } catch (err) {
+        toast.error(t('toast.networkError'));
         console.error('Rename channel error:', err);
       }
     },
