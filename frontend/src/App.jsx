@@ -2,10 +2,12 @@ import {
   BrowserRouter as Router,
   Routes,
   Route,
+  Link,
 } from 'react-router-dom';
 
 import ChatPage from './pages/ChatPage';
 import LoginPage from './pages/LoginPage';
+import SignupPage from './pages/SignupPage';
 import NotFoundPage from './pages/NotFoundPage';
 import PrivateRoute from './components/PrivateRoute';
 
@@ -22,7 +24,7 @@ const App = () => {
       <div className="d-flex flex-column h-100">
         <Navbar bg="white" expand="lg" className="shadow-sm">
           <Container>
-            <Navbar.Brand href="/">Hexlet Chat</Navbar.Brand>
+            <Navbar.Brand as={Link} to="/">Hexlet Chat</Navbar.Brand>
             {token && <Button onClick={() => dispatch(logOut())}>Выйти</Button>}
           </Container>
         </Navbar>
@@ -36,6 +38,7 @@ const App = () => {
             )}
           />
           <Route path="/login" element={<LoginPage />} />
+          <Route path="/signup" element={<SignupPage />} />
           <Route path="*" element={<NotFoundPage />} />
         </Routes>
       </div>

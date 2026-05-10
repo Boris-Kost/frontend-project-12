@@ -2,7 +2,7 @@ import * as yup from 'yup';
 import { useState, useRef, useEffect } from 'react';
 import axios from 'axios';
 import { useDispatch } from 'react-redux';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, Link } from 'react-router-dom';
 import { useFormik } from 'formik';
 import { Button, Form } from 'react-bootstrap';
 import { logIn } from '../slices/authSlice';
@@ -87,6 +87,12 @@ const LoginPage = () => {
                 </Form.Group>
                 <Button type="submit" variant="outline-primary" className="w-100 mb-3">Войти</Button>
               </Form>
+            </div>
+            <div className="card-footer p-4">
+              <div className="text-center">
+                <span>Нет аккаунта? </span>
+                <Link to="/signup">Регистрация</Link>
+              </div>
             </div>
           </div>
         </div>
