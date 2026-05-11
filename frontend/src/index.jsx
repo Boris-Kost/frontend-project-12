@@ -11,7 +11,13 @@ import { addChannels, renameChannel, removeChannel } from './slices/channelsSlic
 import i18n from 'i18next';
 import { I18nextProvider, initReactI18next } from 'react-i18next';
 import filter from 'leo-profanity';
+import { Provider as RollbarProvider, ErrorBoundary } from '@rollbar/react';
 import resources from './locales/index.js';
+
+const rollbarConfig = {
+  accessToken: import.meta.env.VITE_ROLLBAR_TOKEN,
+  environment: import.meta.env.MODE || 'development',
+};
 
 const ruDict = filter.getDictionary('ru');
 filter.add(ruDict);
@@ -43,10 +49,14 @@ socket.on('removeChannel', (payload) => {
 
 createRoot(document.getElementById('root')).render(
   <StrictMode>
-    <Provider store={store}>
-      <I18nextProvider i18n={i18n}>
-        <App />
-      </I18nextProvider>
-    </Provider>
+    <RollbarProvider config={rollbarConfig}>
+      <ErrorBoundary>
+        <Provider store={store}>
+          <I18nextProvider i18n={i18n}>
+            <App />
+          </I18nextProvider>
+        </Provider>
+      </ErrorBoundary>
+    </RollbarProvider>
   </StrictMode>,
 )
