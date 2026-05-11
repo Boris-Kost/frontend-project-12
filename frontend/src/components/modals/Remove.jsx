@@ -21,8 +21,8 @@ const Remove = () => {
       })
       toast.success(t('toast.channelRemoved'))
       dispatch(closeModal())
-      }
-      catch (err) {
+    }
+    catch (err) {
       toast.error(t('toast.networkError'))
       console.error('Remove channel error:', err)
       setIsSubmitting(false)

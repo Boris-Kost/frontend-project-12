@@ -16,7 +16,7 @@ const Rename = () => {
   const { token } = useSelector(state => state.auth)
   const { item: channelId } = useSelector(state => state.modal)
   const { t } = useTranslation()
-  
+
   const channel = useSelector(state => channelsSelectors.selectById(state, channelId))
   const channels = useSelector(channelsSelectors.selectAll)
   const channelNames = channels.map(c => c.name)

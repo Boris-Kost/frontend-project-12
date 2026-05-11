@@ -91,7 +91,7 @@ const SignupPage = () => {
                     {formik.errors.username}
                   </Form.Control.Feedback>
                 </Form.Group>
-                
+
                 <Form.Group className="form-floating mb-3">
                   <Form.Control
                     type="password"
@@ -124,8 +124,8 @@ const SignupPage = () => {
                     id="confirmPassword"
                     autoComplete="new-password"
                     isInvalid={
-                      registrationFailed ||
-                      (formik.touched.confirmPassword && formik.errors.confirmPassword)
+                      registrationFailed
+                      || (formik.touched.confirmPassword && formik.errors.confirmPassword)
                     }
                     required
                   />
