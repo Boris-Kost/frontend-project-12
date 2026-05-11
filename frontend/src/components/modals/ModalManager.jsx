@@ -1,4 +1,3 @@
-import React from 'react';
 import { useSelector } from 'react-redux';
 import Add from './Add.jsx';
 import Rename from './Rename.jsx';

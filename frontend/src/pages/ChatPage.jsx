@@ -1,4 +1,4 @@
-import React, { useEffect, useRef } from 'react';
+import { useEffect, useRef } from 'react';
 import axios from 'axios';
 import { useDispatch, useSelector } from 'react-redux';
 import { Container, Row, Col, ListGroup, Form, Button, InputGroup, Dropdown, ButtonGroup } from 'react-bootstrap';
@@ -53,7 +53,7 @@ const ChatPage = () => {
     };
 
     fetchData();
-  }, [dispatch, token]);
+  }, [dispatch, token, t]);
 
   const formik = useFormik({
     initialValues: { body: '' },
