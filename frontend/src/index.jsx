@@ -19,6 +19,8 @@ const rollbarConfig = {
   environment: import.meta.env.MODE || 'development',
 };
 
+console.log('Rollbar token present:', !!import.meta.env.VITE_ROLLBAR_TOKEN);
+
 const ruDict = filter.getDictionary('ru');
 filter.add(ruDict);
 
