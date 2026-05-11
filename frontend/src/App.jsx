@@ -3,25 +3,25 @@ import {
   Routes,
   Route,
   Link,
-} from 'react-router-dom';
+} from 'react-router-dom'
 
-import ChatPage from './pages/ChatPage';
-import LoginPage from './pages/LoginPage';
-import SignupPage from './pages/SignupPage';
-import NotFoundPage from './pages/NotFoundPage';
-import PrivateRoute from './components/PrivateRoute';
+import ChatPage from './pages/ChatPage'
+import LoginPage from './pages/LoginPage'
+import SignupPage from './pages/SignupPage'
+import NotFoundPage from './pages/NotFoundPage'
+import PrivateRoute from './components/PrivateRoute'
 
-import { useDispatch, useSelector } from 'react-redux';
-import { Button, Navbar, Container } from 'react-bootstrap';
-import { useTranslation } from 'react-i18next';
-import { ToastContainer } from 'react-toastify';
-import 'react-toastify/dist/ReactToastify.css';
-import { logOut } from './slices/authSlice';
+import { useDispatch, useSelector } from 'react-redux'
+import { Button, Navbar, Container } from 'react-bootstrap'
+import { useTranslation } from 'react-i18next'
+import { ToastContainer } from 'react-toastify'
+import 'react-toastify/dist/ReactToastify.css'
+import { logOut } from './slices/authSlice'
 
 const App = () => {
-  const { token } = useSelector((state) => state.auth);
-  const dispatch = useDispatch();
-  const { t } = useTranslation();
+  const { token } = useSelector(state => state.auth)
+  const dispatch = useDispatch()
+  const { t } = useTranslation()
 
   return (
     <Router>
@@ -48,7 +48,7 @@ const App = () => {
       </div>
       <ToastContainer />
     </Router>
-  );
-};
+  )
+}
 
-export default App;
+export default App

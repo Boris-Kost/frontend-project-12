@@ -1,6 +1,6 @@
-import { createSlice, createEntityAdapter } from '@reduxjs/toolkit';
+import { createSlice, createEntityAdapter } from '@reduxjs/toolkit'
 
-const messagesAdapter = createEntityAdapter();
+const messagesAdapter = createEntityAdapter()
 
 const messagesSlice = createSlice({
   name: 'messages',
@@ -9,8 +9,8 @@ const messagesSlice = createSlice({
     addMessages: messagesAdapter.addMany,
     addMessage: messagesAdapter.addOne,
   },
-});
+})
 
-export const { addMessages, addMessage } = messagesSlice.actions;
-export const selectors = messagesAdapter.getSelectors((state) => state.messages);
-export default messagesSlice.reducer;
+export const { addMessages, addMessage } = messagesSlice.actions
+export const selectors = messagesAdapter.getSelectors(state => state.messages)
+export default messagesSlice.reducer

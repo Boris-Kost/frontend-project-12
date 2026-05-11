@@ -64,4 +64,4 @@ export default {
       networkError: 'Ошибка соединения',
     },
   },
-};
+}

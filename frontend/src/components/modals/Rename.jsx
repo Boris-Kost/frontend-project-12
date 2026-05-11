@@ -1,29 +1,29 @@
-import { useEffect, useRef } from 'react';
-import { useDispatch, useSelector } from 'react-redux';
-import { Modal, Button, Form } from 'react-bootstrap';
-import { useFormik } from 'formik';
-import * as yup from 'yup';
-import { useTranslation } from 'react-i18next';
-import { toast } from 'react-toastify';
-import filter from 'leo-profanity';
-import axios from 'axios';
-import { closeModal } from '../../slices/modalSlice';
-import { selectors as channelsSelectors } from '../../slices/channelsSlice';
+import { useEffect, useRef } from 'react'
+import { useDispatch, useSelector } from 'react-redux'
+import { Modal, Button, Form } from 'react-bootstrap'
+import { useFormik } from 'formik'
+import * as yup from 'yup'
+import { useTranslation } from 'react-i18next'
+import { toast } from 'react-toastify'
+import filter from 'leo-profanity'
+import axios from 'axios'
+import { closeModal } from '../../slices/modalSlice'
+import { selectors as channelsSelectors } from '../../slices/channelsSlice'
 
 const Rename = () => {
-  const dispatch = useDispatch();
-  const inputRef = useRef();
-  const { token } = useSelector((state) => state.auth);
-  const { item: channelId } = useSelector((state) => state.modal);
-  const { t } = useTranslation();
+  const dispatch = useDispatch()
+  const inputRef = useRef()
+  const { token } = useSelector(state => state.auth)
+  const { item: channelId } = useSelector(state => state.modal)
+  const { t } = useTranslation()
   
-  const channel = useSelector((state) => channelsSelectors.selectById(state, channelId));
-  const channels = useSelector(channelsSelectors.selectAll);
-  const channelNames = channels.map((c) => c.name);
+  const channel = useSelector(state => channelsSelectors.selectById(state, channelId))
+  const channels = useSelector(channelsSelectors.selectAll)
+  const channelNames = channels.map(c => c.name)
 
   useEffect(() => {
-    setTimeout(() => inputRef.current?.select(), 0);
-  }, []);
+    setTimeout( => inputRef.current?.select(), 0)
+  }, [])
 
   const formik = useFormik({
     initialValues: { name: channel.name },
@@ -38,18 +38,18 @@ const Rename = () => {
     }),
     onSubmit: async (values) => {
       try {
-        const filteredName = filter.clean(values.name);
+        const filteredName = filter.clean(values.name)
         await axios.patch(`/api/v1/channels/${channelId}`, { name: filteredName }, {
           headers: { Authorization: `Bearer ${token}` },
-        });
-        toast.success(t('toast.channelRenamed'));
-        dispatch(closeModal());
+        })
+        toast.success(t('toast.channelRenamed'))
+        dispatch(closeModal())
       } catch (err) {
-        toast.error(t('toast.networkError'));
-        console.error('Rename channel error:', err);
+        toast.error(t('toast.networkError'))
+        console.error('Rename channel error:', err)
       }
     },
-  });
+  })
 
   return (
     <Modal show onHide={() => dispatch(closeModal())} centered>
@@ -81,7 +81,7 @@ const Rename = () => {
         </Form>
       </Modal.Body>
     </Modal>
-  );
-};
+  )
+}
 
-export default Rename;
+export default Rename

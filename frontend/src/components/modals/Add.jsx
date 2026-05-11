@@ -1,26 +1,26 @@
-import { useEffect, useRef } from 'react';
-import { useDispatch, useSelector } from 'react-redux';
-import { Modal, Button, Form } from 'react-bootstrap';
-import { useFormik } from 'formik';
-import * as yup from 'yup';
-import { useTranslation } from 'react-i18next';
-import { toast } from 'react-toastify';
-import filter from 'leo-profanity';
-import axios from 'axios';
-import { closeModal } from '../../slices/modalSlice';
-import { setCurrentChannelId, selectors as channelsSelectors } from '../../slices/channelsSlice';
+import { useEffect, useRef } from 'react'
+import { useDispatch, useSelector } from 'react-redux'
+import { Modal, Button, Form } from 'react-bootstrap'
+import { useFormik } from 'formik'
+import * as yup from 'yup'
+import { useTranslation } from 'react-i18next'
+import { toast } from 'react-toastify'
+import filter from 'leo-profanity'
+import axios from 'axios'
+import { closeModal } from '../../slices/modalSlice'
+import { setCurrentChannelId, selectors as channelsSelectors } from '../../slices/channelsSlice'
 
 const Add = () => {
-  const dispatch = useDispatch();
-  const inputRef = useRef();
-  const { token } = useSelector((state) => state.auth);
-  const channels = useSelector(channelsSelectors.selectAll);
-  const channelNames = channels.map((c) => c.name);
-  const { t } = useTranslation();
+  const dispatch = useDispatch()
+  const inputRef = useRef()
+  const { token } = useSelector(state => state.auth)
+  const channels = useSelector(channelsSelectors.selectAll)
+  const channelNames = channels.map(c => c.name)
+  const { t } = useTranslation()
 
   useEffect(() => {
-    inputRef.current.focus();
-  }, []);
+    inputRef.current.focus()
+  }, [])
 
   const formik = useFormik({
     initialValues: { name: '' },
@@ -35,19 +35,19 @@ const Add = () => {
     }),
     onSubmit: async (values) => {
       try {
-        const filteredName = filter.clean(values.name);
+        const filteredName = filter.clean(values.name)
         const response = await axios.post('/api/v1/channels', { name: filteredName }, {
           headers: { Authorization: `Bearer ${token}` },
-        });
-        dispatch(setCurrentChannelId(response.data.id));
-        toast.success(t('toast.channelCreated'));
-        dispatch(closeModal());
+        })
+        dispatch(setCurrentChannelId(response.data.id))
+        toast.success(t('toast.channelCreated'))
+        dispatch(closeModal())
       } catch (err) {
-        toast.error(t('toast.networkError'));
-        console.error('Add channel error:', err);
+        toast.error(t('toast.networkError'))
+        console.error('Add channel error:', err)
       }
     },
-  });
+  })
 
   return (
     <Modal show onHide={() => dispatch(closeModal())} centered>
@@ -79,7 +79,7 @@ const Add = () => {
         </Form>
       </Modal.Body>
     </Modal>
-  );
-};
+  )
+}
 
-export default Add;
+export default Add

@@ -1,26 +1,26 @@
 import { StrictMode } from 'react'
 import { createRoot } from 'react-dom/client'
-import { io } from 'socket.io-client';
-import { Provider } from 'react-redux';
-import 'bootstrap/dist/css/bootstrap.min.css';
+import { io } from 'socket.io-client'
+import { Provider } from 'react-redux'
+import 'bootstrap/dist/css/bootstrap.min.css'
 import './index.css'
 import App from './App.jsx'
-import store from './slices/index.js';
-import { addMessage } from './slices/messagesSlice';
-import { addChannels, renameChannel, removeChannel } from './slices/channelsSlice';
-import i18n from 'i18next';
-import { I18nextProvider, initReactI18next } from 'react-i18next';
-import filter from 'leo-profanity';
-import { Provider as RollbarProvider, ErrorBoundary } from '@rollbar/react';
-import resources from './locales/index.js';
+import store from './slices/index.js'
+import { addMessage } from './slices/messagesSlice'
+import { addChannels, renameChannel, removeChannel } from './slices/channelsSlice'
+import i18n from 'i18next'
+import { I18nextProvider, initReactI18next } from 'react-i18next'
+import filter from 'leo-profanity'
+import { Provider as RollbarProvider, ErrorBoundary } from '@rollbar/react'
+import resources from './locales/index.js'
 
 const rollbarConfig = {
   accessToken: import.meta.env.VITE_ROLLBAR_TOKEN,
   environment: import.meta.env.MODE || 'development',
-};
+}
 
-const ruDict = filter.getDictionary('ru');
-filter.add(ruDict);
+const ruDict = filter.getDictionary('ru')
+filter.add(ruDict)
 
 i18n
   .use(initReactI18next)
@@ -31,21 +31,21 @@ i18n
     interpolation: {
       escapeValue: false,
     },
-  });
+  })
 
-const socket = io();
+const socket = io()
 socket.on('newMessage', (payload) => {
-  store.dispatch(addMessage(payload));
-});
+  store.dispatch(addMessage(payload))
+})
 socket.on('newChannel', (payload) => {
-  store.dispatch(addChannels([payload]));
-});
+  store.dispatch(addChannels([payload]))
+})
 socket.on('renameChannel', (payload) => {
-  store.dispatch(renameChannel(payload));
-});
+  store.dispatch(renameChannel(payload))
+})
 socket.on('removeChannel', (payload) => {
-  store.dispatch(removeChannel(payload.id));
-});
+  store.dispatch(removeChannel(payload.id))
+})
 
 createRoot(document.getElementById('root')).render(
   <StrictMode>

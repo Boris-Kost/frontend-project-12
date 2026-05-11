@@ -1,23 +1,23 @@
-import { useSelector } from 'react-redux';
-import Add from './Add.jsx';
-import Rename from './Rename.jsx';
-import Remove from './Remove.jsx';
+import { useSelector } from 'react-redux'
+import Add from './Add.jsx'
+import Rename from './Rename.jsx'
+import Remove from './Remove.jsx'
 
 const modals = {
   adding: Add,
   renaming: Rename,
   removing: Remove,
-};
+}
 
 const ModalManager = () => {
-  const { type } = useSelector((state) => state.modal);
+  const { type } = useSelector(state => state.modal)
 
   if (!type) {
-    return null;
+    return null
   }
 
-  const Component = modals[type];
-  return <Component />;
-};
+  const Component = modals[type]
+  return <Component />
+}
 
-export default ModalManager;
+export default ModalManager

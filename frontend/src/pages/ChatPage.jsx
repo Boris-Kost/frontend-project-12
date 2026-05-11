@@ -1,59 +1,59 @@
-import { useEffect, useRef } from 'react';
-import axios from 'axios';
-import { useDispatch, useSelector } from 'react-redux';
-import { Container, Row, Col, ListGroup, Form, Button, InputGroup, Dropdown, ButtonGroup } from 'react-bootstrap';
-import { useFormik } from 'formik';
-import * as yup from 'yup';
-import { useTranslation } from 'react-i18next';
-import { toast } from 'react-toastify';
-import filter from 'leo-profanity';
-import { addChannels, setCurrentChannelId, selectors as channelsSelectors } from '../slices/channelsSlice';
-import { addMessages, selectors as messagesSelectors } from '../slices/messagesSlice';
-import { openModal } from '../slices/modalSlice';
-import ModalManager from '../components/modals/ModalManager';
+import { useEffect, useRef } from 'react'
+import axios from 'axios'
+import { useDispatch, useSelector } from 'react-redux'
+import { Container, Row, Col, ListGroup, Form, Button, InputGroup, Dropdown, ButtonGroup } from 'react-bootstrap'
+import { useFormik } from 'formik'
+import * as yup from 'yup'
+import { useTranslation } from 'react-i18next'
+import { toast } from 'react-toastify'
+import filter from 'leo-profanity'
+import { addChannels, setCurrentChannelId, selectors as channelsSelectors } from '../slices/channelsSlice'
+import { addMessages, selectors as messagesSelectors } from '../slices/messagesSlice'
+import { openModal } from '../slices/modalSlice'
+import ModalManager from '../components/modals/ModalManager'
 
 const ChatPage = () => {
-  const dispatch = useDispatch();
-  const { token, username } = useSelector((state) => state.auth);
-  const messagesBoxRef = useRef();
-  const { t } = useTranslation();
+  const dispatch = useDispatch()
+  const { token, username } = useSelector(state => state.auth)
+  const messagesBoxRef = useRef()
+  const { t } = useTranslation()
   
-  const channels = useSelector(channelsSelectors.selectAll);
-  const currentChannelId = useSelector((state) => state.channels.currentChannelId);
-  const messages = useSelector(messagesSelectors.selectAll);
+  const channels = useSelector(channelsSelectors.selectAll)
+  const currentChannelId = useSelector(state => state.channels.currentChannelId)
+  const messages = useSelector(messagesSelectors.selectAll)
 
   // Автопрокрутка вниз при новых сообщениях
   useEffect(() => {
     if (messagesBoxRef.current) {
-      messagesBoxRef.current.scrollTo(0, messagesBoxRef.current.scrollHeight);
+      messagesBoxRef.current.scrollTo(0, messagesBoxRef.current.scrollHeight)
     }
-  }, [messages]);
+  }, [messages])
 
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const headers = { Authorization: `Bearer ${token}` };
+        const headers = { Authorization: `Bearer ${token}` }
         const [channelsResponse, messagesResponse] = await Promise.all([
           axios.get('/api/v1/channels', { headers }),
           axios.get('/api/v1/messages', { headers }),
-        ]);
+        ])
 
-        dispatch(addChannels(channelsResponse.data));
-        dispatch(addMessages(messagesResponse.data));
+        dispatch(addChannels(channelsResponse.data))
+        dispatch(addMessages(messagesResponse.data))
         
         if (channelsResponse.data.length > 0) {
-          dispatch(setCurrentChannelId(channelsResponse.data[0].id));
+          dispatch(setCurrentChannelId(channelsResponse.data[0].id))
         }
       } catch (err) {
         if (!err.isAxiosError || err.response?.status !== 401) {
-          toast.error(t('toast.networkError'));
+          toast.error(t('toast.networkError'))
         }
-        console.error('Fetch error:', err);
+        console.error('Fetch error:', err)
       }
-    };
+    }
 
-    fetchData();
-  }, [dispatch, token, t]);
+    fetchData()
+  }, [dispatch, token, t])
 
   const formik = useFormik({
     initialValues: { body: '' },
@@ -65,21 +65,21 @@ const ChatPage = () => {
         body: filter.clean(values.body),
         channelId: currentChannelId,
         username,
-      };
+      }
       try {
         await axios.post('/api/v1/messages', message, {
           headers: { Authorization: `Bearer ${token}` },
-        });
-        resetForm();
+        })
+        resetForm()
       } catch (err) {
-        toast.error(t('toast.networkError'));
-        console.error('Send error:', err);
+        toast.error(t('toast.networkError'))
+        console.error('Send error:', err)
       }
     },
-  });
+  })
 
-  const currentChannelMessages = messages.filter((m) => m.channelId === currentChannelId);
-  const currentChannel = channels.find((c) => c.id === currentChannelId);
+  const currentChannelMessages = messages.filter(m => m.channelId === currentChannelId)
+  const currentChannel = channels.find(c => c.id === currentChannelId)
 
   return (
     <Container className="h-100 my-4 overflow-hidden rounded shadow">
@@ -94,7 +94,7 @@ const ChatPage = () => {
             </Button>
           </div>
           <ListGroup variant="flush" className="flex-column nav-pills nav-fill px-2">
-            {channels.map((channel) => (
+            {channels.map(channel => (
               <ListGroup.Item
                 key={channel.id}
                 as="li"
@@ -134,7 +134,7 @@ const ChatPage = () => {
               <span className="text-muted">{t('chat.messageCount', { count: currentChannelMessages.length })}</span>
             </div>
             <div id="messages-box" ref={messagesBoxRef} className="chat-messages overflow-auto px-5">
-              {currentChannelMessages.map((message) => (
+              {currentChannelMessages.map(message => (
                 <div key={message.id} className="text-break mb-2">
                   <b>{message.username}</b>: {message.body}
                 </div>
@@ -163,7 +163,7 @@ const ChatPage = () => {
         </Col>
       </Row>
     </Container>
-  );
-};
+  )
+}
 
-export default ChatPage;
+export default ChatPage

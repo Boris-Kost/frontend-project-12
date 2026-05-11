@@ -1,32 +1,32 @@
-import { useState } from 'react';
-import { useDispatch, useSelector } from 'react-redux';
-import { Modal, Button } from 'react-bootstrap';
-import { useTranslation } from 'react-i18next';
-import { toast } from 'react-toastify';
-import axios from 'axios';
-import { closeModal } from '../../slices/modalSlice';
+import { useState } from 'react'
+import { useDispatch, useSelector } from 'react-redux'
+import { Modal, Button } from 'react-bootstrap'
+import { useTranslation } from 'react-i18next'
+import { toast } from 'react-toastify'
+import axios from 'axios'
+import { closeModal } from '../../slices/modalSlice'
 
 const Remove = () => {
-  const dispatch = useDispatch();
-  const [isSubmitting, setIsSubmitting] = useState(false);
-  const { token } = useSelector((state) => state.auth);
-  const { item: channelId } = useSelector((state) => state.modal);
-  const { t } = useTranslation();
+  const dispatch = useDispatch()
+  const [isSubmitting, setIsSubmitting] = useState(false)
+  const { token } = useSelector(state => state.auth)
+  const { item: channelId } = useSelector(state => state.modal)
+  const { t } = useTranslation()
 
   const handleRemove = async () => {
-    setIsSubmitting(true);
+    setIsSubmitting(true)
     try {
       await axios.delete(`/api/v1/channels/${channelId}`, {
         headers: { Authorization: `Bearer ${token}` },
-      });
-      toast.success(t('toast.channelRemoved'));
-      dispatch(closeModal());
+      })
+      toast.success(t('toast.channelRemoved'))
+      dispatch(closeModal())
     } catch (err) {
-      toast.error(t('toast.networkError'));
-      console.error('Remove channel error:', err);
-      setIsSubmitting(false);
+      toast.error(t('toast.networkError'))
+      console.error('Remove channel error:', err)
+      setIsSubmitting(false)
     }
-  };
+  }
 
   return (
     <Modal show onHide={() => dispatch(closeModal())} centered>
@@ -41,7 +41,7 @@ const Remove = () => {
         </div>
       </Modal.Body>
     </Modal>
-  );
-};
+  )
+}
 
-export default Remove;
+export default Remove

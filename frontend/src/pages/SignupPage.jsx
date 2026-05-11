@@ -1,24 +1,24 @@
-import * as yup from 'yup';
-import { useState, useRef, useEffect } from 'react';
-import axios from 'axios';
-import { useDispatch } from 'react-redux';
-import { useNavigate } from 'react-router-dom';
-import { useFormik } from 'formik';
-import { Button, Form } from 'react-bootstrap';
-import { useTranslation } from 'react-i18next';
-import { toast } from 'react-toastify';
-import { logIn } from '../slices/authSlice';
+import * as yup from 'yup'
+import { useState, useRef, useEffect } from 'react'
+import axios from 'axios'
+import { useDispatch } from 'react-redux'
+import { useNavigate } from 'react-router-dom'
+import { useFormik } from 'formik'
+import { Button, Form } from 'react-bootstrap'
+import { useTranslation } from 'react-i18next'
+import { toast } from 'react-toastify'
+import { logIn } from '../slices/authSlice'
 
 const SignupPage = () => {
-  const [registrationFailed, setRegistrationFailed] = useState(false);
-  const inputRef = useRef();
-  const dispatch = useDispatch();
-  const navigate = useNavigate();
-  const { t } = useTranslation();
+  const [registrationFailed, setRegistrationFailed] = useState(false)
+  const inputRef = useRef()
+  const dispatch = useDispatch()
+  const navigate = useNavigate()
+  const { t } = useTranslation()
 
   useEffect(() => {
-    inputRef.current.focus();
-  }, []);
+    inputRef.current.focus()
+  }, [])
 
   const formik = useFormik({
     initialValues: {
@@ -42,25 +42,25 @@ const SignupPage = () => {
         .oneOf([yup.ref('password'), null], t('errors.passwordMatch')),
     }),
     onSubmit: async (values) => {
-      setRegistrationFailed(false);
+      setRegistrationFailed(false)
       try {
         const response = await axios.post('/api/v1/signup', {
           username: values.username,
           password: values.password,
-        });
-        dispatch(logIn(response.data));
-        navigate('/');
+        })
+        dispatch(logIn(response.data))
+        navigate('/')
       } catch (err) {
         if (err.isAxiosError && err.response?.status === 409) {
-          setRegistrationFailed(true);
-          inputRef.current.select();
-          return;
+          setRegistrationFailed(true)
+          inputRef.current.select()
+          return
         }
-        toast.error(t('toast.networkError'));
-        console.error(err);
+        toast.error(t('toast.networkError'))
+        console.error(err)
       }
     },
-  });
+  })
 
   return (
     <div className="container-fluid h-100">
@@ -145,7 +145,7 @@ const SignupPage = () => {
         </div>
       </div>
     </div>
-  );
-};
+  )
+}
 
-export default SignupPage;
+export default SignupPage
