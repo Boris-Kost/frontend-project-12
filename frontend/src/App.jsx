@@ -16,7 +16,6 @@ import { useDispatch, useSelector } from 'react-redux';
 import { Button, Navbar, Container } from 'react-bootstrap';
 import { useTranslation } from 'react-i18next';
 import { ToastContainer } from 'react-toastify';
-import { useRollbar } from '@rollbar/react';
 import 'react-toastify/dist/ReactToastify.css';
 import { logOut } from './slices/authSlice';
 
@@ -24,11 +23,6 @@ const App = () => {
   const { token } = useSelector((state) => state.auth);
   const dispatch = useDispatch();
   const { t } = useTranslation();
-  const rollbar = useRollbar();
-
-  useEffect(() => {
-    rollbar.info('App initialized and Rollbar is working!');
-  }, [rollbar]);
 
   return (
     <Router>
