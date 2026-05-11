@@ -6,6 +6,7 @@ import { useFormik } from 'formik';
 import * as yup from 'yup';
 import { useTranslation } from 'react-i18next';
 import { toast } from 'react-toastify';
+import filter from 'leo-profanity';
 import { addChannels, setCurrentChannelId, selectors as channelsSelectors } from '../slices/channelsSlice';
 import { addMessages, selectors as messagesSelectors } from '../slices/messagesSlice';
 import { openModal } from '../slices/modalSlice';
@@ -61,7 +62,7 @@ const ChatPage = () => {
     }),
     onSubmit: async (values, { resetForm }) => {
       const message = {
-        body: values.body,
+        body: filter.clean(values.body),
         channelId: currentChannelId,
         username,
       };

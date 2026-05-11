@@ -5,6 +5,7 @@ import { useFormik } from 'formik';
 import * as yup from 'yup';
 import { useTranslation } from 'react-i18next';
 import { toast } from 'react-toastify';
+import filter from 'leo-profanity';
 import axios from 'axios';
 import { closeModal } from '../../slices/modalSlice';
 import { setCurrentChannelId, selectors as channelsSelectors } from '../../slices/channelsSlice';
@@ -34,7 +35,8 @@ const Add = () => {
     }),
     onSubmit: async (values) => {
       try {
-        const response = await axios.post('/api/v1/channels', values, {
+        const filteredName = filter.clean(values.name);
+        const response = await axios.post('/api/v1/channels', { name: filteredName }, {
           headers: { Authorization: `Bearer ${token}` },
         });
         dispatch(setCurrentChannelId(response.data.id));

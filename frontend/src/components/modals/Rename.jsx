@@ -5,6 +5,7 @@ import { useFormik } from 'formik';
 import * as yup from 'yup';
 import { useTranslation } from 'react-i18next';
 import { toast } from 'react-toastify';
+import filter from 'leo-profanity';
 import axios from 'axios';
 import { closeModal } from '../../slices/modalSlice';
 import { selectors as channelsSelectors } from '../../slices/channelsSlice';
@@ -37,7 +38,8 @@ const Rename = () => {
     }),
     onSubmit: async (values) => {
       try {
-        await axios.patch(`/api/v1/channels/${channelId}`, values, {
+        const filteredName = filter.clean(values.name);
+        await axios.patch(`/api/v1/channels/${channelId}`, { name: filteredName }, {
           headers: { Authorization: `Bearer ${token}` },
         });
         toast.success(t('toast.channelRenamed'));

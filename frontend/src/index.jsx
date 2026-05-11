@@ -10,7 +10,11 @@ import { addMessage } from './slices/messagesSlice';
 import { addChannels, renameChannel, removeChannel } from './slices/channelsSlice';
 import i18n from 'i18next';
 import { I18nextProvider, initReactI18next } from 'react-i18next';
+import filter from 'leo-profanity';
 import resources from './locales/index.js';
+
+const ruDict = filter.getDictionary('ru');
+filter.add(ruDict);
 
 i18n
   .use(initReactI18next)
