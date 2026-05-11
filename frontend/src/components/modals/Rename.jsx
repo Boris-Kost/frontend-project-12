@@ -22,7 +22,7 @@ const Rename = () => {
   const channelNames = channels.map(c => c.name)
 
   useEffect(() => {
-    setTimeout( => inputRef.current?.select(), 0)
+    setTimeout(() => inputRef.current?.select(), 0)
   }, [])
 
   const formik = useFormik({
