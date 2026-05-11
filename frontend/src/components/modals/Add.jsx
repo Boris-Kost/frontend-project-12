@@ -42,7 +42,8 @@ const Add = () => {
         dispatch(setCurrentChannelId(response.data.id))
         toast.success(t('toast.channelCreated'))
         dispatch(closeModal())
-      } catch (err) {
+      }
+      catch (err) {
         toast.error(t('toast.networkError'))
         console.error('Add channel error:', err)
       }

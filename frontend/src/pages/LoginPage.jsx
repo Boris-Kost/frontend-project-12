@@ -35,7 +35,8 @@ const LoginPage = () => {
         const response = await axios.post('/api/v1/login', values)
         dispatch(logIn(response.data))
         navigate('/')
-      } catch (err) {
+      }
+      catch (err) {
         if (err.isAxiosError && err.response?.status === 401) {
           setAuthFailed(true)
           inputRef.current.select()

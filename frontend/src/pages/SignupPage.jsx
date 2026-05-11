@@ -50,7 +50,8 @@ const SignupPage = () => {
         })
         dispatch(logIn(response.data))
         navigate('/')
-      } catch (err) {
+      }
+      catch (err) {
         if (err.isAxiosError && err.response?.status === 409) {
           setRegistrationFailed(true)
           inputRef.current.select()
